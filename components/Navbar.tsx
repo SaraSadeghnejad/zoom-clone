@@ -18,7 +18,7 @@ const Navbar = () => {
           Yoom
         </p>
       </Link>
-      <div className="flex flex-between gap-6">
+      <div className="flex-between gap-6">
        <MobileNav />
       </div>
     </nav>
