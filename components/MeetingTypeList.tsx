@@ -4,14 +4,39 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import React, { useState } from "react";
 import MeetingModal from "./MeetingModal";
+import { useUser } from "@clerk/nextjs";
+import { useStreamVideoClient } from "@stream-io/video-react-sdk";
 
 const MeetingTypeList = () => {
   const [meetingType, setMeetingType] = useState<
     "isScheduleMeeting" | "isJoiningMeeting" | "isInstantMeeting" | undefined
   >();
-  const createMeeting =()=>{
-    
-  }
+  const [values, setValues] = useState({
+    dateTime: new Date(),
+    description: "",
+    link: ""
+  });
+  const [callDetails, setCallDetails] = useState()
+  const user = useUser();
+  const client = useStreamVideoClient();
+  const createMeeting = async() => {
+    if (!client || !user) return;
+    try {
+      const id = crypto.randomUUID();
+      const call = client.call("default", id);
+      if (!call) throw new Error("Call failed");
+      const startsAt = values.dateTime.toISOString() || new Date(Date.now()).toISOString();
+      const decription = values.description || 'instant meeting';
+      await call.getOrCreate({data:{
+        starts_at:startsAt,
+        custom:{
+            decription:decription,
+        }
+      }})
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
       {cards.map((item: any) => {
