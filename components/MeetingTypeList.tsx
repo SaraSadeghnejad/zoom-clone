@@ -1,5 +1,4 @@
 "use client";
-import React, { useState } from "react";
 import MeetingModal from "./MeetingModal";
 import { useUser } from "@clerk/nextjs";
 import { Call, useStreamVideoClient } from "@stream-io/video-react-sdk";
@@ -9,7 +8,8 @@ import HomeCard from "./HomeCard";
 import { Textarea } from "./ui/textarea";
 import ReactDatePicker from "react-datepicker";
 import { Input } from "./ui/input";
-const meetingStateList = () => {
+import { useState } from "react";
+const MeetingTypeList = () => {
   const [meetingState, setMeetingState] = useState<
     "isScheduleMeeting" | "isJoiningMeeting" | "isInstantMeeting" | undefined
   >(undefined);
@@ -162,4 +162,4 @@ const meetingStateList = () => {
   );
 };
 
-export default meetingStateList;
+export default MeetingTypeList;
